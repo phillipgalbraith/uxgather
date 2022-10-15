@@ -23,7 +23,7 @@ export default function Login() {
     minlength="8"
     maxlength="20"
   />
-  <button type="submit">Submit</button>
+  <button type="submit"><Link href="/dashboard">Submit</Link></button>
 </form>
 
       <Link href="/">back to landing page</Link>
