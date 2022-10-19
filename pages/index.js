@@ -21,7 +21,7 @@ export default function Home() {
         </button> 
       </nav>
       
-      <Image src={teamPic} className="img-rounded" alt="silhouette of a team" />
+      <Image src={teamPic} alt="silhouette of a team" />
 
     </div>
   )
