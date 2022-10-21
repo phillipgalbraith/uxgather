@@ -1,23 +1,8 @@
 import Link from "next/link"
 import {user, suites} from "./api/dummy-data"
-import {useState, useEffect} from 'react'
 
 export default function Dashboard() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setLoading(true)
-    fetch('/api/dummy-data')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
-
   
-
   return (
     <div>
       <div>
