@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model knex_migrations {
+  id             Int       @id @default(autoincrement())
+  name           String?   @db.VarChar(255)
+  batch          Int?
+  migration_time DateTime? @db.Timestamptz(6)
+}
+
+model knex_migrations_lock {
+  index     Int  @id @default(autoincrement())
+  is_locked Int?
+}
+
+model suites {
+  suite_id    Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  client      String  @db.VarChar(255)
+  environment String  @db.VarChar(255)
+  user_id     Int
+  users       users   @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "suites_user_id_foreign")
+  tests       tests[]
+}
+
+model tests {
+  test_id       Int      @id @default(autoincrement())
+  name          String?  @db.VarChar(200)
+  directions    String[]
+  tester_email  String?  @db.VarChar(255)
+  tester_filled Boolean?
+  user_id       Int
+  suite_id      Int
+  suites        suites   @relation(fields: [suite_id], references: [suite_id], onUpdate: NoAction, map: "tests_suite_id_foreign")
+  users         users    @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "tests_user_id_foreign")
+}
+
+model users {
+  user_id    Int      @id @default(autoincrement())
+  first_name String?  @db.VarChar(200)
+  last_name  String?  @db.VarChar(200)
+  username   String   @unique(map: "users_username_unique") @db.VarChar(200)
+  password   String   @db.VarChar(200)
+  email      String   @db.VarChar(200)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  suites     suites[]
+  tests      tests[]
+}

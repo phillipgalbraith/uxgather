@@ -1,8 +1,17 @@
 import Link from "next/link"
 import {user, suites} from "./api/dummy-data"
+import useSWR from 'swr'
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Dashboard() {
+     const { data, error } = useSWR('/api/suites-data', fetcher)
   
+    if (error) return <div>Failed to load</div>
+    if (!data) return <div>Loading...</div>
+  
+ 
+
   return (
     <div>
       <div>

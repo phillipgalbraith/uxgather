@@ -6,6 +6,44 @@ create a genuine login page that returns {user, suites} from a database
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 
+## API
+
+This project is designed to pull data from a Postgresql database
+### Postgresql
+Install Postgresql > PGAdmin4 > knex > knex-cleaner > pg > dotenv
+
+set up a dotenv with secrets
+knex init and import secrets as constants THIS_SECRET, etc
+
+migrate
+
+add tables to the migration
+
+Create seeds for each table
+
+seed
+
+### Queries with Prisma
+Adding prisma
+npm install prisma --save-dev
+Invoking Prisma
+npx prisma  
+Setting up Prisma Schema
+npx prisma init
+
+update the .env prisma data source URL
+
+Prisma Introspects the database, creating a data model in the Prisma schema
+npx prisma db pull
+make the client with $ prisma generate
+
+update the schema column names to be lower-case
+
+npm install @prisma/client 
+npx prisma generate 
+
+https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/querying-the-database-typescript-postgres
+
 ## Getting Started
 
 First, run the development server:
