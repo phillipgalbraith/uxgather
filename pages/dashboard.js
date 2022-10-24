@@ -1,24 +1,25 @@
 import Link from "next/link"
-import {user, suites} from "./api/dummy-data"
-import {useState, useEffect} from 'react'
+import prisma from '../lib/prisma';
 
-export default function Dashboard() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
+export const getStaticProps = async () => {
+  const suites = await prisma.suites.findMany();
+  const users = await prisma.users.findMany();
+  const tests = await prisma.tests.findMany();
 
-  useEffect(() => {
-    setLoading(true)
-    fetch('/api/dummy-data')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
+  return {
+    props:{ 
+      suites, 
+      tests, 
+      users: JSON.parse(JSON.stringify(users))},
+  }
+}
 
-  
 
-  return (
+export default function Dashboard({suites, users, tests}) {
+  const user = users[0]
+  console.log(suites)
+
+   return (
     <div>
       <div>
         <h5>Welcome, {user.name}!</h5>
@@ -35,7 +36,7 @@ export default function Dashboard() {
         <h3>Suites</h3>
         {suites.map( suite => {
           return (
-            <div key={suite.id} className="card-container">
+            <div key={suite.suite_id} className="card-container">
                 <div className="suite-card">
                   <ul>
                     <li>  
@@ -45,7 +46,15 @@ export default function Dashboard() {
                     <li> Facilitators: </li>
                       <ol>
                         {
-                          suite.facilitators.map( e => <li key={e.id}>{e.name}</li>)
+                          tests.filter(test => test.suite_id === suite.suite_id)
+                            .map( test => {
+                              return (
+                                <li key={test.user_id}>
+                                  {`${users[test.user_id].first_name}`
+                                  + ` ${users[test.user_id].last_name}`}
+                                </li>
+                              )
+                            })
                         }
                       </ol>
 
