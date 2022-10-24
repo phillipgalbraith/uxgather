@@ -48,9 +48,13 @@ export default function Dashboard({suites, users, tests}) {
                         {
                           tests.filter(test => test.suite_id === suite.suite_id)
                             .map( test => {
-                            <li key={test.user_id}>
-                              {users[test.user_id].name}
-                            </li>})
+                              return (
+                                <li key={test.user_id}>
+                                  {`${users[test.user_id].first_name}`
+                                  + ` ${users[test.user_id].last_name}`}
+                                </li>
+                              )
+                            })
                         }
                       </ol>
 
