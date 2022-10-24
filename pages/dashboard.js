@@ -1,18 +1,25 @@
 import Link from "next/link"
-import {user, suites} from "./api/dummy-data"
-import useSWR from 'swr'
+import prisma from '../lib/prisma';
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+export const getStaticProps = async () => {
+  const suites = await prisma.suites.findMany();
+  const users = await prisma.users.findMany();
+  const tests = await prisma.tests.findMany();
 
-export default function Dashboard() {
-     const { data, error } = useSWR('/api/suites-data', fetcher)
-  
-    if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
-  
- 
+  return {
+    props:{ 
+      suites, 
+      tests, 
+      users: JSON.parse(JSON.stringify(users))},
+  }
+}
 
-  return (
+
+export default function Dashboard({suites, users, tests}) {
+  const user = users[0]
+  console.log(suites)
+
+   return (
     <div>
       <div>
         <h5>Welcome, {user.name}!</h5>
@@ -29,7 +36,7 @@ export default function Dashboard() {
         <h3>Suites</h3>
         {suites.map( suite => {
           return (
-            <div key={suite.id} className="card-container">
+            <div key={suite.suite_id} className="card-container">
                 <div className="suite-card">
                   <ul>
                     <li>  
@@ -39,7 +46,11 @@ export default function Dashboard() {
                     <li> Facilitators: </li>
                       <ol>
                         {
-                          suite.facilitators.map( e => <li key={e.id}>{e.name}</li>)
+                          tests.filter(test => test.suite_id === suite.suite_id)
+                            .map( test => {
+                            <li key={test.user_id}>
+                              {users[test.user_id].name}
+                            </li>})
                         }
                       </ol>
 

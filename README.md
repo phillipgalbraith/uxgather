@@ -1,5 +1,7 @@
 The next steps:
 
+use hello.js from Next.js and index.js from Prisma to build an endpoint 
+create an endpoint to fetch data from
 create a genuine login page that returns {user, suites} from a database
 
 
@@ -31,7 +33,8 @@ npx prisma
 Setting up Prisma Schema
 npx prisma init
 
-update the .env prisma data source URL
+update the schema.prisma
+I updated the url variable from DATABASE_URL to DEV_DATABASE_URL
 
 Prisma Introspects the database, creating a data model in the Prisma schema
 npx prisma db pull
@@ -43,6 +46,10 @@ npm install @prisma/client
 npx prisma generate 
 
 https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/querying-the-database-typescript-postgres
+
+    you can query the database through index.ts by the command
+    $ npx ts-node ./prisma/index.ts
+
 
 ## Getting Started
 
